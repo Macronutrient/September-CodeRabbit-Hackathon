@@ -1,0 +1,259 @@
+<!-- AI Tab Organizer • Popup
+Modern, minimal, dark UI with purple accents + live progress -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AI Tab Organizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg: #0f0f14;
+      --panel: #15151d;
+      --panel-2: #1b1b26;
+      --text: #e7e7ef;
+      --muted: #a4a4b5;
+      --border: #28283a;
+      --accent: #8b5cf6;  /* purple */
+      --accent-2: #7c3aed;
+      --accent-3: #a78bfa;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 14px;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0; padding:0; width: 450px;
+      background:
+        radial-gradient(700px 400px at 20% -10%, rgba(139,92,246,0.16), transparent 50%),
+        radial-gradient(600px 380px at 90% 0%, rgba(124,58,237,0.12), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap{ padding: 16px; }
+    .header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .brand{ display:flex; align-items:center; gap:10px; }
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: var(--shadow);
+      font-weight:700; color:white; font-size:13px;
+      letter-spacing:.5px;
+    }
+    h1{ margin:0; font-size:16px; letter-spacing:.2px; }
+    .sub{ margin:2px 0 0 0; color: var(--muted); font-size:12px; }
+
+    .chip{
+      font-size:11px; color:#fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
+      padding:4px 8px; border-radius:999px; border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .row{ display:grid; gap:10px; }
+    .label{ font-size:11px; text-transform: uppercase; letter-spacing:.6px; color: var(--muted); }
+
+    .inline{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .muted{ color: var(--muted); font-size:12px; }
+
+    .range{
+      display:flex; align-items:center; gap:10px;
+      background: #0f0f16; border:1px solid var(--border); border-radius:10px; padding: 8px 10px;
+    }
+    .range input[type="range"]{
+      flex:1;
+      accent-color: var(--accent);
+      -webkit-appearance: none;
+      height: 8px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-radius: 999px;
+      outline: none;
+      border: 1px solid var(--border);
+    }
+    .range input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(139,92,246,.4);
+      cursor: pointer;
+    }
+    .range input[type="range"]::-moz-range-thumb{
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(139,92,246,.4);
+      cursor: pointer;
+    }
+    .range .val{ min-width:28px; text-align:right; font-weight:700; }
+
+    .toggle{
+      appearance:none; width:42px; height:24px; border-radius:999px;
+      position:relative; background:#26263a; border:1px solid var(--border); cursor:pointer;
+      transition: background .15s ease;
+    }
+    .toggle:checked{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; }
+    .toggle::after{
+      content:""; position:absolute; width:18px; height:18px; border-radius:999px; top:2.5px; left:2.5px; background:#fff;
+      transition: transform .15s ease;
+    }
+    .toggle:checked::after{ transform: translateX(18px); }
+
+    .btn{
+      appearance:none; border:0; outline:none; cursor:pointer;
+      border-radius:10px; padding: 11px 14px; font-weight:700; font-size:13px;
+      transition: transform .08s ease, opacity .15s ease, box-shadow .15s ease, filter .15s ease;
+      backdrop-filter: saturate(120%);
+    }
+    .btn:active{ transform: translateY(1px) }
+    .btn-primary{
+      color:white; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 20px rgba(139,92,246,.25);
+      width:100%;
+    }
+    .btn-secondary{
+      color: var(--text); background: var(--glass); border: 1px solid var(--border);
+    }
+    .btn-danger{
+      color:white; background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 10px 20px rgba(239,68,68,.2);
+    }
+    .btn-ghost{
+      color: var(--text); background: transparent; border:1px dashed var(--border);
+    }
+    .btn:hover{ filter: brightness(1.04); }
+
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .link{ color: var(--accent-3); text-decoration:none; font-weight:600; font-size:12px; }
+    .link:hover{ text-decoration:underline }
+
+    .progress{ display:grid; gap:8px; }
+    .stage{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      font-size:12px; color: var(--muted);
+    }
+    .bar{
+      width:100%; height:10px; border-radius:999px; background:#0e0e14; border:1px solid var(--border); overflow:hidden;
+    }
+    .bar > .fill{
+      height:100%; width:0%; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      transition: width .2s ease;
+    }
+    .log{
+      max-height: 120px; overflow:auto; margin:2px 0 0 0; padding-right:4px;
+      font-size:11px; color: var(--muted);
+    }
+    .log .item{ padding:4px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+    .log .item:last-child{ border-bottom:0; }
+
+    .status{
+      text-align:center; font-size:12px; color: var(--muted);
+      padding: 8px; border: 1px solid var(--border); border-radius:10px; background:#101019; margin-top:10px;
+    }
+    .small{ font-size:11px; color: var(--muted); }
+    .footer{
+      display:flex; align-items:center; justify-content:space-between; margin-top:8px;
+      opacity:.9;
+    }
+
+    .hidden{ display:none !important; }
+    .disabled{ opacity:.6; pointer-events:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">AI</div>
+        <div>
+          <h1>AI Tab Organizer</h1>
+          <div class="sub">Smart tab management with GPT-4.1</div>
+        </div>
+      </div>
+      <div class="chip" id="tabCount">0 tabs</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="card" id="progressCard" style="display:none">
+      <div class="progress">
+        <div class="stage">
+          <span id="stageText">Preparing…</span>
+          <span id="percentText">0%</span>
+        </div>
+        <div class="bar"><div class="fill" id="progressFill"></div></div>
+        <div class="log" id="progressLog"></div>
+      </div>
+      <div class="status" id="statusMsg" style="display:none"></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="card" style="margin-top:10px">
+      <div class="row">
+        <div class="label">Importance threshold</div>
+        <div class="range">
+          <input id="threshold" type="range" min="1" max="10" value="5" />
+          <div class="val" id="thresholdValue">5</div>
+        </div>
+        <div class="inline" data-toggle-for="autoClose">
+          <div class="muted">Close tabs below this score</div>
+          <label class="inline" style="gap:8px; cursor:pointer">
+            <span class="muted">Auto-close</span>
+            <input id="autoClose" type="checkbox" class="toggle" />
+          </label>
+        </div>
+        <div class="inline" data-toggle-for="autoOrganize">
+          <div class="muted">Auto organize new/updated tabs (Gemini)</div>
+          <label class="inline" style="gap:8px; cursor:pointer">
+            <span class="muted">Auto-organize</span>
+            <input id="autoOrganize" type="checkbox" class="toggle" />
+          </label>
+        </div>
+        <div class="inline">
+          <a href="#" id="openOptions" class="link">Manage API Key in Options</a>
+          <span class="small">API key is stored locally in Chrome sync</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="grid2" style="margin-top:10px">
+      <button id="closeLowBtn" class="btn btn-secondary" title="Close only tabs below the threshold using AI scores">
+        Close Low-Importance
+      </button>
+      <button id="organizeBtn" class="btn btn-primary">
+        <span class="button-text">Analyze & Organize Tabs</span>
+      </button>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <button id="undoBtn" class="btn btn-secondary" title="Undo the last action (reopen closed tabs and ungroup)">
+        Undo Last Action
+      </button>
+      <button id="createTabsBtn" class="btn btn-ghost hidden" title="Create many test tabs for organizing">
+        Create Test Tabs
+      </button>
+    </div>
+
+    <div class="footer">
+      <span class="small" id="versionInfo" title="Click 5 times to toggle test tools">v1.0.0 • Minimal dark UI</span>
+      <span class="small">Cmd/Ctrl + Enter to organize</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

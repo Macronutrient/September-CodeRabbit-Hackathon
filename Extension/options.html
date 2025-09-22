@@ -1,0 +1,316 @@
+<!-- AI Tab Organizer • Options (API Key)
+Modern, minimal, dark UI with purple accents -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Tab Organizer • Options</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg: #0f0f14;
+      --panel: #15151d;
+      --panel-2: #1b1b26;
+      --text: #e7e7ef;
+      --muted: #a4a4b5;
+      --border: #28283a;
+      --accent: #8b5cf6;  /* purple */
+      --accent-2: #7c3aed;
+      --accent-3: #a78bfa;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background: radial-gradient(1000px 600px at 15% 0%, rgba(139,92,246,0.12), transparent 50%),
+                  radial-gradient(800px 500px at 85% 20%, rgba(124,58,237,0.10), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.45;
+    }
+    .wrap{
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+    .header{
+      display:flex; align-items:center; gap:14px; margin-bottom:18px;
+    }
+    .logo{
+      width:42px; height:42px; border-radius:10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: var(--shadow);
+      font-weight:700; color:white;
+    }
+    h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+    .sub{
+      margin: 3px 0 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .card{
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .section{
+      display:grid; gap:16px;
+    }
+    .label{ font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+    .row{
+      display:grid; gap:10px;
+    }
+    .input{
+      display:flex; align-items:center; gap:10px;
+      background: #0f0f16;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      transition: .15s border-color ease, .15s background ease;
+    }
+    .input:focus-within{ border-color: var(--accent); background: #0e0e14; }
+    .input input{
+      flex:1; background: transparent; border:0; outline: none; color: var(--text);
+      font-size: 14px; letter-spacing: .2px;
+    }
+    .btn{
+      appearance:none; border:0; outline:none; cursor:pointer;
+      border-radius:10px; padding: 10px 14px; font-weight:600; font-size:14px;
+      transition: transform .08s ease, opacity .15s ease, box-shadow .15s ease;
+    }
+    .btn:active{ transform: translateY(1px) }
+    .btn-primary{
+      color:white; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 20px rgba(139,92,246,.25);
+    }
+    .btn-outline{
+      color: var(--text); background: transparent; border: 1px solid var(--border);
+    }
+    .btn-danger{
+      color:white; background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 10px 20px rgba(239,68,68,.2);
+    }
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;
+    }
+    .hint{ color: var(--muted); font-size: 12px; }
+    .status{
+      display:flex; align-items:center; gap:10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+      background: #101019;
+      font-size: 13px;
+    }
+    .status .dot{ width:8px; height:8px; border-radius:999px; background: var(--muted); }
+    .status.success .dot{ background: var(--success); }
+    .status.warn .dot{ background: var(--warning); }
+    .status.error .dot{ background: var(--danger); }
+    .status .msg{ color: var(--muted); }
+    .link{
+      color: var(--accent-3); text-decoration:none; font-weight:600;
+    }
+    .link:hover{ text-decoration:underline }
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px){
+      .grid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .box{
+      border: 1px solid var(--border);
+      background: #101018;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .box h3{ margin:0 0 8px 0; font-size:14px; letter-spacing:.3px; color: #ddd; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: #0c0c12; border: 1px solid var(--border); border-radius:8px; padding: 2px 6px; font-size:12px;
+    }
+    .inline{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .right{
+      display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;
+    }
+    .toggle{
+      appearance:none; width:40px; height:24px; border-radius:999px;
+      position:relative; background:#26263a; border:1px solid var(--border); cursor:pointer;
+      transition: background .15s ease;
+    }
+    .toggle:checked{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; }
+    .toggle::after{
+      content:""; position:absolute; width:18px; height:18px; border-radius:999px; top:2px; left:2px; background:#fff;
+      transition: transform .15s ease;
+    }
+    .toggle:checked::after{ transform: translateX(16px); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="logo">AI</div>
+      <div>
+        <h1>AI Tab Organizer • Options</h1>
+        <p class="sub">Manage your API keys and preferences</p>
+      </div>
+    </div>
+
+    <div class="card section" style="margin-bottom:18px">
+      <div class="row">
+        <div class="label">OpenAI API Key</div>
+        <div class="input">
+          <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+          <button id="toggleKey" class="btn btn-outline" title="Show / Hide">Show</button>
+        </div>
+        <div class="inline">
+          <span class="hint">Your key is stored locally in Chrome sync storage.</span>
+          <a class="link" target="_blank" href="https://platform.openai.com/api-keys">Get API key</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Gemini API Key</div>
+        <div class="input">
+          <input id="geminiKey" type="password" placeholder="AIza..." autocomplete="off" />
+          <button id="toggleGeminiKey" class="btn btn-outline" title="Show / Hide">Show</button>
+        </div>
+        <div class="inline">
+          <span class="hint">Used for auto-organization with Gemini 2.5 Flash Lite.</span>
+          <a class="link" target="_blank" href="https://aistudio.google.com/app/apikey">Get Gemini key</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Claude API Key</div>
+        <div class="input">
+          <input id="claudeKey" type="password" placeholder="sk-ant-..." autocomplete="off" />
+          <button id="toggleClaudeKey" class="btn btn-outline" title="Show / Hide">Show</button>
+        </div>
+        <div class="inline">
+          <span class="hint">Used when provider is Claude.</span>
+          <a class="link" target="_blank" href="https://console.anthropic.com/settings/keys">Get Claude key</a>
+        </div>
+      </div>
+
+      <div class="right">
+        <button id="clearBtn" class="btn btn-danger">Clear</button>
+        <button id="saveBtn" class="btn btn-primary">Save Keys</button>
+      </div>
+    </div>
+
+    <!-- Model Settings -->
+    <div class="card section" style="margin-bottom:18px">
+      <div class="row">
+        <div class="label">Model Settings</div>
+
+        <div class="row" style="grid-template-columns: 1fr 1fr; gap:12px">
+          <div>
+            <div class="label" style="margin-bottom:6px">Analyze & Organize</div>
+            <div class="input" style="margin-bottom:8px">
+              <select id="providerAnalyze" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option>
+                <option value="claude">Claude</option>
+              </select>
+            </div>
+            <div class="input">
+              <select id="modelAnalyze" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="gpt-4.1">gpt-4.1 (OpenAI)</option>
+                <option value="gpt-4o-mini">gpt-4o-mini (OpenAI)</option>
+                <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Gemini)</option>
+                <option value="gemini-1.5-flash">gemini-1.5-flash (Gemini)</option>
+                <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet-latest (Claude)</option>
+                <option value="claude-3-haiku-20240307">claude-3-haiku (Claude)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="label" style="margin-bottom:6px">Close Low-Importance</div>
+            <div class="input" style="margin-bottom:8px">
+              <select id="providerClose" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option>
+                <option value="claude">Claude</option>
+              </select>
+            </div>
+            <div class="input">
+              <select id="modelClose" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="gpt-4.1">gpt-4.1 (OpenAI)</option>
+                <option value="gpt-4o-mini">gpt-4o-mini (OpenAI)</option>
+                <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Gemini)</option>
+                <option value="gemini-1.5-flash">gemini-1.5-flash (Gemini)</option>
+                <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet-latest (Claude)</option>
+                <option value="claude-3-haiku-20240307">claude-3-haiku (Claude)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:10px">
+          <div>
+            <div class="label" style="margin-bottom:6px">Auto-organize (New/Updated Tabs)</div>
+            <div class="input" style="margin-bottom:8px">
+              <select id="providerAuto" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="gemini">Gemini</option>
+                <option value="openai">OpenAI</option>
+                <option value="claude">Claude</option>
+              </select>
+            </div>
+            <div class="input">
+              <select id="modelAuto" style="flex:1; background:transparent; color:var(--text); border:0; outline:0">
+                <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (Gemini)</option>
+                <option value="gemini-1.5-flash">gemini-1.5-flash (Gemini)</option>
+                <option value="gpt-4.1">gpt-4.1 (OpenAI)</option>
+                <option value="gpt-4o-mini">gpt-4o-mini (OpenAI)</option>
+                <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet-latest (Claude)</option>
+                <option value="claude-3-haiku-20240307">claude-3-haiku (Claude)</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="box">
+        <h3>Tips</h3>
+        <div class="hint">
+          • The popup will use this key automatically during organization.<br/>
+          • You can close this tab after saving.<br/>
+          • Keep your key private. Never share it.
+        </div>
+      </div>
+      <div class="box">
+        <h3>Shortcuts</h3>
+        <div class="hint">
+          <div>Open popup quickly with <span class="kbd">Alt</span> + <span class="kbd">Shift</span> + <span class="kbd">O</span> (set in Chrome shortcuts).</div>
+          <div>In popup: <span class="kbd">⌘/Ctrl</span> + <span class="kbd">Enter</span> to organize.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="status" class="status" style="margin-top:18px">
+      <div class="dot"></div>
+      <div class="msg">Waiting for changes…</div>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
